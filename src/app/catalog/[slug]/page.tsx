@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { createClient } from "@/core/supabase/client";
+import { mockDbInfo } from "@/core/mocks/data";
 import { Header } from "@/shared/layout/Header";
 import { Footer } from "@/shared/layout/Footer";
 import { ProductGrid } from "@/features/catalog/ProductGrid";
@@ -12,7 +12,7 @@ import { Product, Category } from "@/core/types";
 export default function CategoryPage() {
   const params = useParams();
   const slug = params.slug as string;
-  
+
   const [category, setCategory] = useState<Category | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,8 +29,6 @@ export default function CategoryPage() {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
 
-  const supabase = createClient();
-
   useEffect(() => {
     fetchData();
   }, [slug]);
@@ -38,11 +36,7 @@ export default function CategoryPage() {
   const fetchData = async () => {
     setLoading(true);
 
-    const { data: cat } = await supabase
-      .from("categories")
-      .select("*")
-      .eq("slug", slug)
-      .single();
+    const cat = mockDbInfo.getCategoryBySlug(slug);
 
     if (!cat) {
       setLoading(false);
@@ -51,11 +45,7 @@ export default function CategoryPage() {
 
     setCategory(cat);
 
-    const { data: prods } = await supabase
-      .from("products")
-      .select("*")
-      .eq("category_id", cat.id)
-      .eq("is_active", true);
+    const prods = mockDbInfo.getProductsByCategory(cat.id);
 
     if (prods) {
       setProducts(prods);

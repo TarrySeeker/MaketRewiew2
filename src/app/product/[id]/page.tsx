@@ -1,4 +1,4 @@
-import { createClient } from "@/core/supabase/server";
+import { mockDbInfo } from "@/core/mocks/data";
 import { notFound } from "next/navigation";
 import { Header } from "@/shared/layout/Header";
 import { Footer } from "@/shared/layout/Footer";
@@ -12,13 +12,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const supabase = await createClient();
-
-  const { data: product } = await supabase
-    .from("products")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const product = mockDbInfo.getProductById(id);
 
   if (!product) {
     return { title: "Товар не найден" };
@@ -44,13 +38,7 @@ export default async function ProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-
-  const { data: product } = await supabase
-    .from("products")
-    .select("*, category:categories(*)")
-    .eq("id", id)
-    .single();
+  const product = mockDbInfo.getProductById(id);
 
   if (!product) {
     notFound();
@@ -77,7 +65,7 @@ export default async function ProductPage({
                   </div>
                 )}
               </div>
-              
+
               {product.images.length > 1 && (
                 <div className="grid grid-cols-4 gap-4">
                   {product.images.slice(1, 5).map((img: string, i: number) => (

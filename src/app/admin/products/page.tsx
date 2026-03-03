@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/core/supabase/client";
+import { mockDbInfo } from "@/core/mocks/data";
 import { Button } from "@/shared/ui/Button";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Product, Category } from "@/core/types";
@@ -15,7 +15,7 @@ export default function AdminProductsPage() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-  const supabase = createClient();
+
 
   useEffect(() => {
     fetchData();
@@ -23,49 +23,47 @@ export default function AdminProductsPage() {
 
   const fetchData = async () => {
     setLoading(true);
-    const [{ data: prods }, { data: cats }] = await Promise.all([
-      supabase.from("products").select("*").order("created_at", { ascending: false }),
-      supabase.from("categories").select("*").order("sort_order"),
-    ]);
-    setProducts(prods || []);
-    setCategories(cats || []);
+    // Simulate network latency
+    await new Promise(resolve => setTimeout(resolve, 300));
+    setProducts([...mockDbInfo.getProducts()]);
+    setCategories([...mockDbInfo.getCategories()]);
     setLoading(false);
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Удалить товар?")) return;
-    await supabase.from("products").delete().eq("id", id);
+    mockDbInfo.deleteProduct(id);
     fetchData();
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     const images = formData.get("images") as string;
     const imagesArray = images ? images.split("\n").filter((url) => url.trim()) : [];
 
     const data = {
-      title: formData.get("title"),
-      slug: formData.get("slug"),
-      description: formData.get("description"),
+      title: formData.get("title") as string,
+      slug: formData.get("slug") as string,
+      description: formData.get("description") as string,
       price: parseFloat(formData.get("price") as string),
       old_price: formData.get("old_price") ? parseFloat(formData.get("old_price") as string) : null,
       stock: parseInt(formData.get("stock") as string),
-      category_id: formData.get("category_id"),
-      material: formData.get("material") || null,
-      color: formData.get("color") || null,
-      brand: formData.get("brand") || null,
-      sku: formData.get("sku") || null,
+      category_id: formData.get("category_id") as string,
+      material: (formData.get("material") as string) || null,
+      color: (formData.get("color") as string) || null,
+      brand: (formData.get("brand") as string) || null,
+      sku: (formData.get("sku") as string) || null,
       images: imagesArray,
       is_active: formData.get("is_active") === "on",
       featured: formData.get("featured") === "on",
     };
 
     if (editingProduct) {
-      await supabase.from("products").update(data).eq("id", editingProduct.id);
+      mockDbInfo.updateProduct(editingProduct.id, data);
     } else {
-      await supabase.from("products").insert(data);
+      mockDbInfo.addProduct(data);
     }
 
     setShowForm(false);

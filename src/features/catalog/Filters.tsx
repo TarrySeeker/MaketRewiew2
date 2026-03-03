@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
 import { Button } from "@/shared/ui/Button";
 
 interface FiltersProps {
@@ -33,22 +32,21 @@ export function Filters({
   onReset,
 }: FiltersProps) {
   return (
-    <Card className="sticky top-24">
-      <CardHeader>
-        <CardTitle className="text-xl">Фильтры</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Цена */}
-        <div>
-          <h4 className="font-semibold mb-3">Цена</h4>
-          <div className="space-y-3">
+    <div className="sticky top-32 w-full space-y-12 pr-6">
+
+      {/* Price Section */}
+      <div className="border-b border-border/50 pb-8">
+        <h4 className="font-serif text-xl tracking-wide uppercase mb-6 text-foreground">Цена</h4>
+        <div className="space-y-6">
+          <div className="relative h-1 bg-secondary rounded-full">
+            {/* Custom styled range inputs for a sleek look could go here. Keeping standard for logic simplicity, styled structurally. */}
             <input
               type="range"
               min={minPrice}
               max={maxPrice}
               value={priceMin}
               onChange={(e) => onPriceChange(parseInt(e.target.value), priceMax)}
-              className="w-full accent-primary"
+              className="absolute w-full h-full opacity-0 cursor-pointer z-10"
             />
             <input
               type="range"
@@ -56,70 +54,85 @@ export function Filters({
               max={maxPrice}
               value={priceMax}
               onChange={(e) => onPriceChange(priceMin, parseInt(e.target.value))}
-              className="w-full accent-primary"
+              className="absolute w-full h-full opacity-0 cursor-pointer z-20"
             />
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                value={priceMin}
-                onChange={(e) => onPriceChange(parseInt(e.target.value) || minPrice, priceMax)}
-                className="w-full px-3 py-2 border rounded-lg bg-background text-sm"
-              />
-              <span className="text-muted-foreground">—</span>
-              <input
-                type="number"
-                value={priceMax}
-                onChange={(e) => onPriceChange(priceMin, parseInt(e.target.value) || maxPrice)}
-                className="w-full px-3 py-2 border rounded-lg bg-background text-sm"
-              />
-            </div>
+            {/* Track highlight logic */}
+            <div
+              className="absolute h-full bg-primary pointer-events-none"
+              style={{
+                left: `${((priceMin - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                right: `${100 - ((priceMax - minPrice) / (maxPrice - minPrice)) * 100}%`
+              }}
+            />
+          </div>
+          <div className="flex items-center gap-4 justify-between font-mono text-sm tracking-widest text-muted-foreground">
+            <input
+              type="number"
+              value={priceMin}
+              onChange={(e) => onPriceChange(parseInt(e.target.value) || minPrice, priceMax)}
+              className="w-24 bg-transparent border-b border-border/50 pb-1 focus:outline-none focus:border-primary text-left"
+            />
+            <span className="text-border">—</span>
+            <input
+              type="number"
+              value={priceMax}
+              onChange={(e) => onPriceChange(priceMin, parseInt(e.target.value) || maxPrice)}
+              className="w-24 bg-transparent border-b border-border/50 pb-1 focus:outline-none focus:border-primary text-right"
+            />
           </div>
         </div>
+      </div>
 
-        {/* Материал */}
-        {materials.length > 0 && (
-          <div>
-            <h4 className="font-semibold mb-3">Материал</h4>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
-              {materials.map((material) => (
-                <label key={material} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedMaterials.includes(material)}
-                    onChange={() => onMaterialToggle(material)}
-                    className="rounded accent-primary"
-                  />
-                  <span className="text-sm">{material}</span>
-                </label>
-              ))}
-            </div>
+      {/* Materials Section */}
+      {materials.length > 0 && (
+        <div className="border-b border-border/50 pb-8">
+          <h4 className="font-serif text-xl tracking-wide uppercase mb-6 text-foreground">Материал</h4>
+          <div className="flex flex-col gap-3">
+            {materials.map((material) => {
+              const isActive = selectedMaterials.includes(material);
+              return (
+                <button
+                  key={material}
+                  onClick={() => onMaterialToggle(material)}
+                  className={`text-left text-sm tracking-widest uppercase transition-colors flex items-center gap-3 group ${isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                >
+                  <span className={`w-3 h-3 border transition-colors ${isActive ? "bg-primary border-primary" : "border-muted-foreground group-hover:border-foreground"}`} />
+                  {material}
+                </button>
+              );
+            })}
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Цвет */}
-        {colors.length > 0 && (
-          <div>
-            <h4 className="font-semibold mb-3">Цвет</h4>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
-              {colors.map((color) => (
-                <label key={color} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedColors.includes(color)}
-                    onChange={() => onColorToggle(color)}
-                    className="rounded accent-primary"
-                  />
-                  <span className="text-sm">{color}</span>
-                </label>
-              ))}
-            </div>
+      {/* Colors Section */}
+      {colors.length > 0 && (
+        <div className="border-b border-border/50 pb-8">
+          <h4 className="font-serif text-xl tracking-wide uppercase mb-6 text-foreground">Цвет</h4>
+          <div className="flex gap-3 flex-wrap">
+            {colors.map((color) => {
+              const isActive = selectedColors.includes(color);
+              return (
+                <button
+                  key={color}
+                  onClick={() => onColorToggle(color)}
+                  className={`px-4 py-2 text-xs tracking-widest uppercase border transition-all ${isActive
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
+                    }`}
+                >
+                  {color}
+                </button>
+              );
+            })}
           </div>
-        )}
+        </div>
+      )}
 
-        <Button variant="outline" size="sm" onClick={onReset} className="w-full">
-          Сбросить фильтры
-        </Button>
-      </CardContent>
-    </Card>
+      <Button variant="outline" onClick={onReset} className="w-full tracking-widest uppercase text-xs rounded-none border-border py-6 hover:bg-foreground hover:text-background transition-colors">
+        Сбросить всё
+      </Button>
+    </div>
   );
 }

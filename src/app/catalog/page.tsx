@@ -1,17 +1,11 @@
-import { createClient } from "@/core/supabase/server";
+import { mockDbInfo } from "@/core/mocks/data";
 import Link from "next/link";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Header } from "@/shared/layout/Header";
 import { Footer } from "@/shared/layout/Footer";
 
 export default async function CatalogPage() {
-  const supabase = await createClient();
-  
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("*")
-    .is("parent_id", null)
-    .order("sort_order");
+  const categories = mockDbInfo.getCategories();
 
   return (
     <>

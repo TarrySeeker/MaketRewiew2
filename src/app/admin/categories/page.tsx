@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/core/supabase/client";
+import { mockDbInfo } from "@/core/mocks/data";
 import { Button } from "@/shared/ui/Button";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Category } from "@/core/types";
@@ -13,7 +13,6 @@ export default function AdminCategoriesPage() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-  const supabase = createClient();
 
   useEffect(() => {
     fetchCategories();
@@ -21,17 +20,14 @@ export default function AdminCategoriesPage() {
 
   const fetchCategories = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("categories")
-      .select("*")
-      .order("sort_order");
-    setCategories(data || []);
+    await new Promise(r => setTimeout(r, 200));
+    setCategories([...mockDbInfo.getCategories()].sort((a, b) => a.sort_order - b.sort_order));
     setLoading(false);
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Удалить категорию? Все товары в ней будут недоступны.")) return;
-    await supabase.from("categories").delete().eq("id", id);
+    mockDbInfo.deleteCategory(id);
     fetchCategories();
   };
 
@@ -40,17 +36,17 @@ export default function AdminCategoriesPage() {
     const formData = new FormData(e.currentTarget);
 
     const data = {
-      name: formData.get("name"),
-      slug: formData.get("slug"),
-      description: formData.get("description") || null,
-      image: formData.get("image") || null,
+      name: formData.get("name") as string,
+      slug: formData.get("slug") as string,
+      description: (formData.get("description") as string) || null,
+      image: (formData.get("image") as string) || null,
       sort_order: parseInt(formData.get("sort_order") as string) || 0,
     };
 
     if (editingCategory) {
-      await supabase.from("categories").update(data).eq("id", editingCategory.id);
+      mockDbInfo.updateCategory(editingCategory.id, data);
     } else {
-      await supabase.from("categories").insert(data);
+      mockDbInfo.addCategory(data);
     }
 
     setShowForm(false);
@@ -74,11 +70,9 @@ export default function AdminCategoriesPage() {
       newCategories[index],
     ];
 
-    await Promise.all(
-      newCategories.map((cat, i) =>
-        supabase.from("categories").update({ sort_order: i }).eq("id", cat.id)
-      )
-    );
+    newCategories.forEach((cat, i) => {
+      mockDbInfo.updateCategory(cat.id, { sort_order: i });
+    });
 
     fetchCategories();
   };

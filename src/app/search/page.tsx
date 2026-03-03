@@ -1,4 +1,4 @@
-import { createClient } from "@/core/supabase/server";
+import { mockDbInfo } from "@/core/mocks/data";
 import { Header } from "@/shared/layout/Header";
 import { Footer } from "@/shared/layout/Footer";
 import { ProductGrid } from "@/features/catalog/ProductGrid";
@@ -11,19 +11,10 @@ export default async function SearchPage({
   const { q } = await searchParams;
   const query = q || "";
 
-  const supabase = await createClient();
-
-  let products = [];
+  let products: Array<any> = [];
 
   if (query.length >= 2) {
-    const { data } = await supabase
-      .from("products")
-      .select("*")
-      .eq("is_active", true)
-      .or(`title.ilike.%${query}%,brand.ilike.%${query}%,description.ilike.%${query}%,material.ilike.%${query}%`)
-      .limit(50);
-
-    products = data || [];
+    products = mockDbInfo.searchProducts(query);
   }
 
   return (

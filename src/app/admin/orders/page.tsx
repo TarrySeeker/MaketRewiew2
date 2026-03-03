@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/core/supabase/client";
+import { mockDbInfo } from "@/core/mocks/data";
 import { Button } from "@/shared/ui/Button";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { formatPrice } from "@/core/utils/format";
@@ -44,7 +44,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  const supabase = createClient();
+
 
   useEffect(() => {
     fetchOrders();
@@ -52,16 +52,13 @@ export default function AdminOrdersPage() {
 
   const fetchOrders = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("orders")
-      .select("*")
-      .order("created_at", { ascending: false });
-    setOrders(data || []);
+    await new Promise(r => setTimeout(r, 200));
+    setOrders(mockDbInfo.getOrders());
     setLoading(false);
   };
 
   const updateStatus = async (orderId: string, newStatus: string) => {
-    await supabase.from("orders").update({ status: newStatus }).eq("id", orderId);
+    mockDbInfo.updateOrderStatus(orderId, newStatus);
     fetchOrders();
     if (selectedOrder?.id === orderId) {
       setSelectedOrder({ ...selectedOrder, status: newStatus });
@@ -101,9 +98,8 @@ export default function AdminOrdersPage() {
                     <select
                       value={selectedOrder.status}
                       onChange={(e) => updateStatus(selectedOrder.id, e.target.value)}
-                      className={`px-3 py-1 rounded-lg text-sm font-medium ${
-                        statusColors[selectedOrder.status]
-                      }`}
+                      className={`px-3 py-1 rounded-lg text-sm font-medium ${statusColors[selectedOrder.status]
+                        }`}
                     >
                       {Object.entries(statusLabels).map(([value, label]) => (
                         <option key={value} value={value}>
@@ -223,9 +219,8 @@ export default function AdminOrdersPage() {
 
                   <div className="flex items-center gap-4">
                     <span
-                      className={`px-3 py-1 rounded-lg text-sm font-medium ${
-                        statusColors[order.status]
-                      }`}
+                      className={`px-3 py-1 rounded-lg text-sm font-medium ${statusColors[order.status]
+                        }`}
                     >
                       {statusLabels[order.status]}
                     </span>

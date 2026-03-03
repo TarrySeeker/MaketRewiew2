@@ -2,46 +2,44 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
-        // Светлая нежная палитра (полная противоположность тёмному инструментальному)
-        background: "#FFF8F0",      // Кремовый фон
-        foreground: "#4A3F35",       // Тёплый коричневый текст
-        card: "#FFFFFF",             // Белые карточки
-        "card-foreground": "#4A3F35",
-        popover: "#FFFFFF",
-        "popover-foreground": "#4A3F35",
-        primary: "#D4A0A0",          // Пыльная роза (акцент)
-        "primary-foreground": "#FFFFFF",
-        secondary: "#F5E6D3",        // Бежевый
-        "secondary-foreground": "#4A3F35",
-        muted: "#F0E6DC",            // Светло-бежевый
-        "muted-foreground": "#8B7355",  // Приглушённый коричневый
-        accent: "#8B9E8B",           // Мятный/зелёный
-        "accent-foreground": "#FFFFFF",
-        destructive: "#C17878",      // Мягкий красный
-        "destructive-foreground": "#FFFFFF",
-        border: "#E5D5C3",           // Светлая граница
-        input: "#F5E6D3",
-        ring: "#D4A0A0",
+        // Ультра-премиальная тёмная палитра
+        background: "#09090B",      // Глубокий чёрный/графит
+        foreground: "#FAFAFA",       // Чистый белый текст
+        card: "#18181B",             // Тёмно-серые карточки (Glassmorphism fallbacks)
+        "card-foreground": "#FAFAFA",
+        popover: "#18181B",
+        "popover-foreground": "#FAFAFA",
+        primary: "#FFFFFF",          // Высокий контраст
+        "primary-foreground": "#09090B",
+        secondary: "#27272A",        // Акценты
+        "secondary-foreground": "#FAFAFA",
+        muted: "#27272A",
+        "muted-foreground": "#A1A1AA",  // Приглушённый текст
+        accent: "#27272A",
+        "accent-foreground": "#FAFAFA",
+        destructive: "#7F1D1D",      // Темно-красный для ошибок
+        "destructive-foreground": "#FAFAFA",
+        border: "#27272A",           // Тонкие границы
+        input: "#27272A",
+        ring: "#D4D4D8",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui"],
         serif: ["var(--font-playfair)", "ui-serif", "Georgia"],
       },
       borderRadius: {
-        DEFAULT: "0.75rem",  // Более закруглённые углы чем у инструментов
-        lg: "1rem",
-        xl: "1.5rem",
+        DEFAULT: "0.25rem",  // Более строгие, архитектурные формы
+        lg: "0.5rem",
+        xl: "1rem",
       },
       boxShadow: {
-        soft: "0 2px 8px rgba(0, 0, 0, 0.06)",  // Мягкие тени
-        medium: "0 4px 16px rgba(0, 0, 0, 0.08)",
+        glow: "0 0 20px rgba(255, 255, 255, 0.05)",  // Нежное свечение
+        intense: "0 10px 40px rgba(0, 0, 0, 0.5)",
       },
     },
   },

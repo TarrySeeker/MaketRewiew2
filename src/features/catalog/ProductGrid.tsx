@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Card, CardContent } from "@/shared/ui/Card";
 import { formatPrice } from "@/core/utils/format";
 import { Product } from "@/core/types";
+import { motion } from "framer-motion";
 
 interface ProductGridProps {
   products: Product[];
@@ -12,62 +12,65 @@ interface ProductGridProps {
 export function ProductGrid({ products }: ProductGridProps) {
   if (products.length === 0) {
     return (
-      <div className="text-center py-20">
-        <p className="text-muted-foreground text-lg">
-          Товары не найдены
+      <div className="w-full flex items-center justify-center py-40 border border-border bg-secondary/5">
+        <p className="text-muted-foreground font-serif tracking-widest uppercase text-sm">
+          Ничего не найдено
         </p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {products.map((product) => (
-        <Link key={product.id} href={`/product/${product.id}`}>
-          <Card className="hover:shadow-medium transition-all duration-300 hover:-translate-y-1 h-full overflow-hidden group">
-            <div className="aspect-square bg-secondary/20 overflow-hidden">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16">
+      {products.map((product, i) => (
+        <Link key={product.id} href={`/product/${product.id}`} className="group">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: i * 0.05 }}
+            className="flex flex-col"
+          >
+            <div className="relative aspect-[3/4] w-full bg-secondary/10 overflow-hidden isolate mb-6">
               {product.images[0] ? (
-                <img
-                  src={product.images[0]}
-                  alt={product.title}
-                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                />
+                <>
+                  <img
+                    src={product.images[0]}
+                    alt={product.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
+                  />
+                  {/* Glitch Overlay Effect */}
+                  <div className="absolute inset-0 bg-primary mix-blend-overlay opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none z-10" />
+                </>
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-muted-foreground">Нет фото</span>
+                  <span className="text-muted-foreground/50 tracking-widest uppercase text-xs font-serif">Empty</span>
                 </div>
               )}
             </div>
-            <CardContent className="p-6">
-              <h3 className="font-serif font-semibold text-xl mb-2 line-clamp-2">
+
+            <div className="flex flex-col">
+              <h3 className="font-serif text-2xl font-bold mb-1 tracking-tight group-hover:text-primary transition-colors">
                 {product.title}
               </h3>
-              
-              <div className="flex flex-wrap gap-2 mb-3">
-                {product.material && (
-                  <span className="text-xs bg-secondary px-2 py-1 rounded">
-                    {product.material}
-                  </span>
-                )}
-                {product.color && (
-                  <span className="text-xs bg-secondary px-2 py-1 rounded">
-                    {product.color}
-                  </span>
-                )}
+
+              <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-muted-foreground mb-4">
+                {product.material && <span>{product.material}</span>}
+                {product.material && product.color && <span>&mdash;</span>}
+                {product.color && <span>{product.color}</span>}
               </div>
 
-              <div className="flex items-baseline gap-2">
-                <span className="font-serif text-2xl font-bold text-primary">
+              <div className="flex items-end gap-3">
+                <span className="font-serif text-xl text-foreground">
                   {formatPrice(product.price)}
                 </span>
                 {product.old_price && (
-                  <span className="text-sm line-through text-muted-foreground">
+                  <span className="text-sm line-through text-muted-foreground/50">
                     {formatPrice(product.old_price)}
                   </span>
                 )}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </motion.div>
         </Link>
       ))}
     </div>

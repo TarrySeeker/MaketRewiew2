@@ -8,7 +8,6 @@ import { Header } from "@/shared/layout/Header";
 import { Footer } from "@/shared/layout/Footer";
 import { formatPrice } from "@/core/utils/format";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/core/supabase/client";
 
 export default function CheckoutPage() {
   const { items, getTotal, clearCart } = useCartStore();
@@ -34,29 +33,11 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      const supabase = createClient();
-
-      const { data: order, error } = await supabase
-        .from("orders")
-        .insert({
-          customer_info: formData,
-          items: items.map((item) => ({
-            product_id: item.product.id,
-            title: item.product.title,
-            price: item.product.price,
-            quantity: item.quantity,
-            image: item.product.images[0],
-          })),
-          total: getTotal(),
-          status: "new",
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      const mockOrderNumber = 'ORD-' + Date.now().toString().slice(-6);
 
       clearCart();
-      alert(`Заказ ${order.order_number} успешно оформлен!\n\nМы свяжемся с вами в ближайшее время.`);
+      alert(`Заказ ${mockOrderNumber} успешно оформлен!\n\nМы свяжемся с вами в ближайшее время.`);
       router.push("/");
     } catch (error: any) {
       console.error("Order creation error:", error);
