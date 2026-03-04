@@ -30,47 +30,47 @@ export default function CategoryPage() {
   const [maxPrice, setMaxPrice] = useState(0);
 
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      const cat = mockDbInfo.getCategoryBySlug(slug);
+
+      if (!cat) {
+        setLoading(false);
+        return;
+      }
+
+      setCategory(cat);
+
+      const prods = mockDbInfo.getProductsByCategory(cat.id);
+
+      if (prods) {
+        setProducts(prods);
+
+        const uniqueMaterials = Array.from(
+          new Set(prods.map((p) => p.material).filter(Boolean))
+        ) as string[];
+        setMaterials(uniqueMaterials.sort());
+
+        const uniqueColors = Array.from(
+          new Set(prods.map((p) => p.color).filter(Boolean))
+        ) as string[];
+        setColors(uniqueColors.sort());
+
+        const prices = prods.map((p) => p.price);
+        const min = Math.floor(Math.min(...prices));
+        const max = Math.ceil(Math.max(...prices));
+        setMinPrice(min);
+        setMaxPrice(max);
+        setPriceMin(min);
+        setPriceMax(max);
+      }
+
+      setLoading(false);
+    };
+
     fetchData();
   }, [slug]);
-
-  const fetchData = async () => {
-    setLoading(true);
-
-    const cat = mockDbInfo.getCategoryBySlug(slug);
-
-    if (!cat) {
-      setLoading(false);
-      return;
-    }
-
-    setCategory(cat);
-
-    const prods = mockDbInfo.getProductsByCategory(cat.id);
-
-    if (prods) {
-      setProducts(prods);
-
-      const uniqueMaterials = Array.from(
-        new Set(prods.map((p) => p.material).filter(Boolean))
-      ) as string[];
-      setMaterials(uniqueMaterials.sort());
-
-      const uniqueColors = Array.from(
-        new Set(prods.map((p) => p.color).filter(Boolean))
-      ) as string[];
-      setColors(uniqueColors.sort());
-
-      const prices = prods.map((p) => p.price);
-      const min = Math.floor(Math.min(...prices));
-      const max = Math.ceil(Math.max(...prices));
-      setMinPrice(min);
-      setMaxPrice(max);
-      setPriceMin(min);
-      setPriceMax(max);
-    }
-
-    setLoading(false);
-  };
 
   const filteredProducts = products
     .filter((p) => {

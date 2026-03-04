@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { formatPrice } from "@/core/utils/format";
 
 export function FeaturedSlider({ products }: { products: any[] }) {
@@ -29,7 +30,7 @@ export function FeaturedSlider({ products }: { products: any[] }) {
 
             <div className="container mx-auto px-4 z-10 relative">
                 <div className="flex justify-between items-end mb-16">
-                    <h3 className="font-serif text-4xl md:text-5xl font-bold">Избранное</h3>
+                    <h3 className="font-serif text-4xl md:text-5xl font-bold">Новинки</h3>
                     <Link href="/catalog" className="text-sm uppercase tracking-widest border-b border-primary pb-1 hover:text-primary transition-colors hidden md:block">
                         Смотреть всё
                     </Link>
@@ -41,7 +42,7 @@ export function FeaturedSlider({ products }: { products: any[] }) {
                         <Link
                             key={product.id}
                             href={`/product/${product.id}`}
-                            className="group min-w-[300px] md:min-w-[400px] snap-center snap-always flex-shrink-0"
+                            className="group w-[60vw] max-w-[280px] md:w-[30vw] md:max-w-[340px] snap-center snap-always flex-shrink-0"
                         >
                             <motion.div
                                 initial={{ opacity: 0, y: 50 }}
@@ -51,10 +52,12 @@ export function FeaturedSlider({ products }: { products: any[] }) {
                                 className="relative aspect-[3/4] bg-secondary/30 mb-6 overflow-hidden"
                             >
                                 {product.images?.[0] ? (
-                                    <img
+                                    <Image
                                         src={product.images[0]}
                                         alt={product.title}
-                                        className="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
+                                        fill
+                                        sizes="(max-width: 768px) 60vw, 30vw"
+                                        className="object-cover transition-transform duration-1000 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
                                     />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-muted-foreground font-serif">

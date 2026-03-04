@@ -6,6 +6,7 @@ import { Button } from "@/shared/ui/Button";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Category } from "@/core/types";
 import { Pencil, Trash2, Plus, MoveUp, MoveDown } from "lucide-react";
+import Image from "next/image";
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -194,10 +195,12 @@ export default function AdminCategoriesPage() {
                 <div className="flex items-center gap-4">
                   {category.image && (
                     <div className="w-16 h-16 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
-                      <img
+                      <Image
                         src={category.image}
                         alt={category.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="64px"
+                        className="object-cover"
                       />
                     </div>
                   )}

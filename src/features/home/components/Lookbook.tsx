@@ -25,7 +25,7 @@ export function Lookbook() {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                         className="font-serif text-4xl md:text-6xl max-w-lg leading-tight"
                     >
-                        Контекст <br /> имеет значение.
+                        Контекст <br /> имеет значение
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, x: 50 }}
@@ -51,8 +51,12 @@ export function Lookbook() {
                             key={spot.id}
                             className="absolute z-10"
                             style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
-                            onMouseEnter={() => setActiveSpot(spot.id)}
-                            onMouseLeave={() => setActiveSpot(null)}
+                            onPointerEnter={(e) => {
+                                if (e.pointerType !== "touch") setActiveSpot(spot.id);
+                            }}
+                            onPointerLeave={(e) => {
+                                if (e.pointerType !== "touch") setActiveSpot(null);
+                            }}
                             onClick={() => setActiveSpot(activeSpot === spot.id ? null : spot.id)}
                         >
                             <div className="relative group cursor-pointer">
@@ -74,11 +78,12 @@ export function Lookbook() {
                                         pointerEvents: activeSpot === spot.id ? "auto" : "none"
                                     }}
                                     transition={{ duration: 0.2 }}
-                                    className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 bg-card/80 backdrop-blur-md border border-border p-4 shadow-intense"
+                                    className={`absolute bottom-full mb-4 w-[160px] max-w-[80vw] bg-card/80 backdrop-blur-md border border-border p-3 md:p-4 shadow-intense ${spot.x >= 70 ? 'right-0' : spot.x <= 30 ? 'left-0' : 'left-1/2 -translate-x-1/2'
+                                        }`}
                                 >
-                                    <h4 className="font-serif font-semibold text-lg mb-1">{spot.title}</h4>
-                                    <p className="text-muted-foreground text-sm mb-3">{spot.price}</p>
-                                    <Link href={`/product/${spot.productId}`} className="text-xs uppercase tracking-widest border-b border-primary pb-1 hover:text-primary transition-colors">
+                                    <h4 className="font-serif font-semibold text-base md:text-lg mb-1 leading-tight">{spot.title}</h4>
+                                    <p className="text-muted-foreground text-xs md:text-sm mb-3">{spot.price}</p>
+                                    <Link href={`/product/${spot.productId}`} className="text-[10px] md:text-xs uppercase tracking-widest border-b border-primary pb-1 hover:text-primary transition-colors">
                                         Посмотреть
                                     </Link>
                                 </motion.div>

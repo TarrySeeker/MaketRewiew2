@@ -8,6 +8,7 @@ import { Footer } from "@/shared/layout/Footer";
 import { formatPrice } from "@/core/utils/format";
 import { Trash2, Minus, Plus } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, getTotal, clearCart } = useCartStore();
@@ -48,14 +49,16 @@ export default function CartPage() {
             <div className="lg:col-span-2 space-y-4">
               {items.map((item) => (
                 <Card key={item.product.id}>
-                  <CardContent className="p-6">
-                    <div className="flex gap-6">
-                      <div className="w-32 h-32 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                      <div className="w-full sm:w-32 h-48 sm:h-32 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
                         {item.product.images[0] ? (
-                          <img
+                          <Image
                             src={item.product.images[0]}
                             alt={item.product.title}
-                            className="w-full h-full object-cover"
+                            fill
+                            sizes="(max-width: 640px) 100vw, 128px"
+                            className="object-cover"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
@@ -64,25 +67,35 @@ export default function CartPage() {
                         )}
                       </div>
 
-                      <div className="flex-1">
-                        <h3 className="font-serif font-semibold text-xl mb-2">
-                          {item.product.title}
-                        </h3>
-                        
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {item.product.material && (
-                            <span className="text-xs bg-secondary px-2 py-1 rounded">
-                              {item.product.material}
-                            </span>
-                          )}
-                          {item.product.color && (
-                            <span className="text-xs bg-secondary px-2 py-1 rounded">
-                              {item.product.color}
-                            </span>
-                          )}
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <div className="flex justify-between items-start gap-2">
+                            <h3 className="font-serif font-semibold text-lg sm:text-xl mb-2 line-clamp-2">
+                              {item.product.title}
+                            </h3>
+                            <button
+                              onClick={() => removeItem(item.product.id)}
+                              className="p-2 -mr-2 -mt-2 hover:bg-destructive/10 rounded-lg transition-colors text-muted-foreground hover:text-destructive shrink-0"
+                            >
+                              <Trash2 className="h-5 w-5" />
+                            </button>
+                          </div>
+
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {item.product.material && (
+                              <span className="text-xs bg-secondary px-2 py-1 rounded">
+                                {item.product.material}
+                              </span>
+                            )}
+                            {item.product.color && (
+                              <span className="text-xs bg-secondary px-2 py-1 rounded">
+                                {item.product.color}
+                              </span>
+                            )}
+                          </div>
                         </div>
 
-                        <div className="flex items-center justify-between mt-4">
+                        <div className="flex flex-wrap items-center justify-between gap-4 mt-2">
                           <div className="flex items-center border rounded-lg">
                             <button
                               onClick={() =>
@@ -107,20 +120,13 @@ export default function CartPage() {
                           </div>
 
                           <div className="text-right">
-                            <p className="font-serif text-2xl font-bold text-primary">
+                            <p className="font-serif text-xl sm:text-2xl font-bold text-primary">
                               {formatPrice(item.product.price * item.quantity)}
                             </p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
                               {formatPrice(item.product.price)} × {item.quantity}
                             </p>
                           </div>
-
-                          <button
-                            onClick={() => removeItem(item.product.id)}
-                            className="p-2 hover:bg-destructive/10 rounded-lg transition-colors text-muted-foreground hover:text-destructive"
-                          >
-                            <Trash2 className="h-5 w-5" />
-                          </button>
                         </div>
                       </div>
                     </div>

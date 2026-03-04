@@ -4,6 +4,7 @@ import Link from "next/link";
 import { formatPrice } from "@/core/utils/format";
 import { Product } from "@/core/types";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface ProductGridProps {
   products: Product[];
@@ -33,10 +34,12 @@ export function ProductGrid({ products }: ProductGridProps) {
             <div className="relative aspect-[3/4] w-full bg-secondary/10 overflow-hidden isolate mb-6">
               {product.images[0] ? (
                 <>
-                  <img
+                  <Image
                     src={product.images[0]}
                     alt={product.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-1000 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
                   />
                   {/* Glitch Overlay Effect */}
                   <div className="absolute inset-0 bg-primary mix-blend-overlay opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none z-10" />

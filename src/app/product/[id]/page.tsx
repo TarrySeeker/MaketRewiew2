@@ -5,6 +5,7 @@ import { Footer } from "@/shared/layout/Footer";
 import { AddToCart } from "@/features/product/AddToCart";
 import { formatPrice } from "@/core/utils/format";
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export async function generateMetadata({
   params,
@@ -54,10 +55,12 @@ export default async function ProductPage({
             <div className="space-y-4">
               <div className="aspect-square rounded-2xl overflow-hidden bg-secondary/20">
                 {product.images[0] ? (
-                  <img
+                  <Image
                     src={product.images[0]}
                     alt={product.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
@@ -73,10 +76,12 @@ export default async function ProductPage({
                       key={i}
                       className="aspect-square rounded-lg overflow-hidden bg-secondary/20"
                     >
-                      <img
+                      <Image
                         src={img}
                         alt={`${product.title} ${i + 2}`}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="(max-width: 1024px) 25vw, 12vw"
+                        className="object-cover"
                       />
                     </div>
                   ))}

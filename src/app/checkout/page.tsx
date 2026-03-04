@@ -13,6 +13,8 @@ export default function CheckoutPage() {
   const { items, getTotal, clearCart } = useCartStore();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [deliveryCost, setDeliveryCost] = useState<number | null>(null);
+  const [calculatingDelivery, setCalculatingDelivery] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,6 +23,64 @@ export default function CheckoutPage() {
     city: "",
     address: "",
   });
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, "");
+    if (val.startsWith("7") || val.startsWith("8")) {
+      val = val.substring(1);
+    }
+    let formatted = "";
+    if (val.length > 0) {
+      formatted = "+7 (" + val.substring(0, 3);
+    }
+    if (val.length >= 4) {
+      formatted += ") " + val.substring(3, 6);
+    }
+    if (val.length >= 7) {
+      formatted += "-" + val.substring(6, 8);
+    }
+    if (val.length >= 9) {
+      formatted += "-" + val.substring(8, 10);
+    }
+    if (e.target.value === "" || e.target.value === "+") {
+      formatted = "";
+    }
+    setFormData({ ...formData, phone: formatted });
+  };
+
+  const calculateDelivery = async (city: string) => {
+    if (!city || city.trim().length === 0) {
+      setDeliveryCost(null);
+      return;
+    }
+    setCalculatingDelivery(true);
+    try {
+      const res = await fetch("/api/cdek/calculate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ city: city.trim() }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.tariffs && data.tariffs.length > 0) {
+          // get the lowest cost tariff
+          const cheapest = Math.min(...data.tariffs.map((t: any) => t.delivery_sum));
+          setDeliveryCost(cheapest);
+        } else {
+          setDeliveryCost(null);
+        }
+      } else {
+        setDeliveryCost(null);
+      }
+    } catch (e) {
+      console.error(e);
+      setDeliveryCost(null);
+    } finally {
+      setCalculatingDelivery(false);
+    }
+  };
+
+  const currentTotal = getTotal() + (deliveryCost || 0);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -88,10 +148,9 @@ export default function CheckoutPage() {
                         required
                         className="w-full px-4 py-3 border rounded-xl bg-background focus:ring-2 focus:ring-primary/20 transition-all"
                         value={formData.phone}
-                        onChange={(e) =>
-                          setFormData({ ...formData, phone: e.target.value })
-                        }
+                        onChange={handlePhoneChange}
                         placeholder="+7 (XXX) XXX-XX-XX"
+                        maxLength={18}
                       />
                     </div>
 
@@ -118,6 +177,8 @@ export default function CheckoutPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, city: e.target.value })
                         }
+                        onBlur={() => calculateDelivery(formData.city)}
+                        placeholder="Например: Новосибирск"
                       />
                     </div>
 
@@ -163,7 +224,13 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Доставка:</span>
-                        <span>Рассчитается менеджером</span>
+                        <span>
+                          {calculatingDelivery
+                            ? "Считаем..."
+                            : deliveryCost
+                              ? formatPrice(deliveryCost)
+                              : "Укажите город"}
+                        </span>
                       </div>
                     </div>
 
@@ -171,7 +238,7 @@ export default function CheckoutPage() {
                       <div className="flex justify-between items-baseline mb-6">
                         <span className="font-serif text-lg font-semibold">Итого:</span>
                         <span className="font-serif text-3xl font-bold text-primary">
-                          {formatPrice(getTotal())}
+                          {formatPrice(currentTotal)}
                         </span>
                       </div>
 

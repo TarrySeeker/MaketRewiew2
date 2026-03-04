@@ -55,7 +55,7 @@ export function WebGLHero() {
                         transition={{ duration: 1, ease: "easeOut" }}
                         className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground leading-[1.1] mb-6"
                     >
-                        Искусство <br /> в каждой детали.
+                        Искусство <br /> в каждой детали
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: 30 }}
@@ -73,7 +73,7 @@ export function WebGLHero() {
                     >
                         <Link href="/catalog">
                             <Button size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-white/90 rounded-none px-10 py-6 text-lg tracking-widest uppercase font-medium">
-                                Войти в каталог
+                                Перейти в каталог
                             </Button>
                         </Link>
                     </motion.div>
@@ -87,7 +87,6 @@ export function WebGLHero() {
                 transition={{ delay: 1, duration: 1 }}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
             >
-                <span className="text-xs uppercase tracking-widest text-muted-foreground">Scrol down</span>
                 <div className="w-[1px] h-12 bg-muted-foreground/30 relative overflow-hidden">
                     <motion.div
                         className="w-full h-full bg-primary absolute top-0"

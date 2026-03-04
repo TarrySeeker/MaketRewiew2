@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCartStore } from "@/store/cart";
 import { Button } from "@/shared/ui/Button";
 import { ShoppingBag, Check, Minus, Plus } from "lucide-react";
@@ -16,6 +16,11 @@ export function AddToCart({ product }: AddToCartProps) {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [flyImages, setFlyImages] = useState<number[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const { addItem, hasItem } = useCartStore();
 
   const inCart = hasItem(product.id);
@@ -78,7 +83,7 @@ export function AddToCart({ product }: AddToCartProps) {
               <Check className="mr-3 h-5 w-5" />
               Добавлено
             </motion.span>
-          ) : inCart ? (
+          ) : isMounted && inCart ? (
             <span className="flex items-center">
               <ShoppingBag className="mr-3 h-5 w-5 opacity-70" />
               Добавить ещё

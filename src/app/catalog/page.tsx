@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Header } from "@/shared/layout/Header";
 import { Footer } from "@/shared/layout/Footer";
+import Image from "next/image";
 
 export default async function CatalogPage() {
   const categories = mockDbInfo.getCategories();
@@ -23,9 +24,11 @@ export default async function CatalogPage() {
                   <Card className="hover:shadow-medium transition-all duration-300 hover:-translate-y-1 h-full overflow-hidden group">
                     {category.image && (
                       <div className="aspect-video bg-secondary/20 overflow-hidden">
-                        <img
+                        <Image
                           src={category.image}
                           alt={category.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>

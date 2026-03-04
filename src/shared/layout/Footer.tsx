@@ -39,19 +39,33 @@ export function Footer() {
 
           <div>
             <h4 className="font-semibold mb-4">Информация</h4>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-3 text-sm flex flex-col items-start">
               <li className="text-muted-foreground">Доставка СДЭК</li>
               <li className="text-muted-foreground">Оплата при получении</li>
               <li className="text-muted-foreground">Гарантия качества</li>
+              <li>
+                <Link href="/returns" className="text-muted-foreground hover:text-primary transition-colors">
+                  Возврат товара
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors text-left block">
+                  Политика конфиденциальности
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold mb-4">Контакты</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li>+7 (XXX) XXX-XX-XX</li>
-              <li>info@mebel.ru</li>
-              <li>г. Новосибирск</li>
+              <li>
+                <a href="tel:+73830000000" className="hover:text-primary transition-colors">+7 (383) 000-00-00</a>
+              </li>
+              <li>
+                <a href="mailto:info@mebel.ru" className="hover:text-primary transition-colors">info@mebel.ru</a>
+              </li>
+              <li>г. Новосибирск, Красный проспект 1</li>
             </ul>
           </div>
         </div>

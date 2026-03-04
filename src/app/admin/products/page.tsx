@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/shared/ui/Card";
 import { Product, Category } from "@/core/types";
 import { Pencil, Trash2, Plus } from "lucide-react";
 import { formatPrice } from "@/core/utils/format";
+import Image from "next/image";
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -293,10 +294,12 @@ export default function AdminProductsPage() {
                 <div className="flex items-center gap-4">
                   <div className="w-20 h-20 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
                     {product.images[0] ? (
-                      <img
+                      <Image
                         src={product.images[0]}
                         alt={product.title}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="80px"
+                        className="object-cover"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">

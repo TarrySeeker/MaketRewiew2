@@ -1,15 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { Home, ShoppingBag, Search, Menu } from "lucide-react";
+import { Home, ShoppingBag, Search, Menu, X, Heart } from "lucide-react";
 import { useCartStore } from "@/store/cart";
-import { useState } from "react";
+import { useWishlistStore } from "@/store/wishlist";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export function Header() {
   const itemCount = useCartStore((state) => state.getItemCount());
+  const wishlistItems = useWishlistStore((state) => state.items);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,20 +74,74 @@ export function Header() {
               </Link>
             </nav>
 
+            <Link href="/wishlist" className="relative group">
+              <Heart className="h-6 w-6 text-foreground group-hover:text-primary transition-colors" />
+              {isMounted && wishlistItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </Link>
+
             <Link href="/cart" className="relative group">
               <ShoppingBag className="h-6 w-6 text-foreground group-hover:text-primary transition-colors" />
-              {itemCount > 0 && (
+              {isMounted && itemCount > 0 && (
                 <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {itemCount}
                 </span>
               )}
             </Link>
 
-            <button className="md:hidden">
-              <Menu className="h-6 w-6" />
+            <button className="md:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-20 left-0 w-full h-[calc(100vh-80px)] bg-background/95 backdrop-blur-md border-t border-border flex flex-col p-6 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+            <form onSubmit={(e) => { handleSearch(e); setIsMobileMenuOpen(false); }} className="w-full mb-4">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Найти мебель..."
+                  className="w-full pl-12 pr-4 py-3 border border-border rounded-xl bg-secondary/50 focus:bg-background transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </form>
+
+            <nav className="flex flex-col gap-6 text-xl font-serif">
+              <Link
+                href="/catalog"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-primary transition-colors"
+              >
+                Каталог
+              </Link>
+              <Link
+                href="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-primary transition-colors"
+              >
+                О нас
+              </Link>
+              <Link
+                href="/wishlist"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-primary transition-colors flex items-center justify-between"
+              >
+                <span>Избранное</span>
+                {isMounted && wishlistItems.length > 0 && (
+                  <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">{wishlistItems.length}</span>
+                )}
+              </Link>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
