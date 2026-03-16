@@ -18,12 +18,12 @@ export default async function CatalogPage() {
           </h1>
 
           {categories && categories.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {categories.map((category) => (
                 <Link key={category.id} href={`/catalog/${category.slug}`}>
                   <Card className="hover:shadow-medium transition-all duration-300 hover:-translate-y-1 h-full overflow-hidden group">
                     {category.image && (
-                      <div className="aspect-video bg-secondary/20 overflow-hidden">
+                      <div className="relative aspect-video bg-secondary/20 overflow-hidden">
                         <Image
                           src={category.image}
                           alt={category.name}

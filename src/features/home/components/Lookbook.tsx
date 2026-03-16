@@ -6,9 +6,9 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 
 const hotspots = [
-    { id: 1, x: 30, y: 40, title: "Lounge Chair", price: "120 000 ₽", productId: "prod-cat-2-1" },
-    { id: 2, x: 70, y: 60, title: "Marble Table", price: "240 000 ₽", productId: "prod-cat-3-1" },
-    { id: 3, x: 80, y: 30, title: "Arc Lamp", price: "85 000 ₽", productId: "prod-cat-4-1" },
+    { id: 1, x: 30, y: 40, title: "Кресло Авангард", price: "120 000 ₽", productId: "prod-cat-2-0" },
+    { id: 2, x: 70, y: 60, title: "Стол Авангард", price: "240 000 ₽", productId: "prod-cat-3-0" },
+    { id: 3, x: 80, y: 30, title: "Кровать Авангард", price: "85 000 ₽", productId: "prod-cat-4-0" },
 ];
 
 export function Lookbook() {
@@ -40,7 +40,7 @@ export function Lookbook() {
 
                 <div className="relative w-full aspect-[4/5] md:aspect-[21/9] bg-secondary/20 overflow-hidden">
                     {/* Fallback image or High-res Render */}
-                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2574&auto=format&fit=crop')] bg-cover bg-center grayscale opacity-80 mix-blend-luminosity brightness-75 transition-all duration-700 hover:grayscale-0 hover:brightness-100" />
+                    <div className="absolute inset-0 bg-[url('/images/local/hero-bg.webp')] bg-cover bg-center grayscale opacity-80 mix-blend-luminosity brightness-75 transition-all duration-700 hover:grayscale-0 hover:brightness-100" />
 
                     {/* Dark Overlay for contrast */}
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent pointer-events-none" />
@@ -78,7 +78,7 @@ export function Lookbook() {
                                         pointerEvents: activeSpot === spot.id ? "auto" : "none"
                                     }}
                                     transition={{ duration: 0.2 }}
-                                    className={`absolute bottom-full mb-4 w-[160px] max-w-[80vw] bg-card/80 backdrop-blur-md border border-border p-3 md:p-4 shadow-intense ${spot.x >= 70 ? 'right-0' : spot.x <= 30 ? 'left-0' : 'left-1/2 -translate-x-1/2'
+                                    className={`absolute bottom-full mb-4 w-[140px] md:w-[160px] bg-card/80 backdrop-blur-md border border-border p-2 md:p-4 shadow-intense ${spot.x >= 70 ? 'right-0' : spot.x <= 30 ? 'left-0' : 'left-1/2 -translate-x-1/2'
                                         }`}
                                 >
                                     <h4 className="font-serif font-semibold text-base md:text-lg mb-1 leading-tight">{spot.title}</h4>

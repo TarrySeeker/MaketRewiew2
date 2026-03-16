@@ -55,12 +55,12 @@ export default async function ProductPage({
             <div className="space-y-4">
               <div className="aspect-square rounded-2xl overflow-hidden bg-secondary/20">
                 {product.images[0] ? (
-                  <Image
+                  <img
                     src={product.images[0]}
                     alt={product.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
+                    className="w-full h-full object-cover"
+                    
+                    loading="eager"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
@@ -76,12 +76,12 @@ export default async function ProductPage({
                       key={i}
                       className="aspect-square rounded-lg overflow-hidden bg-secondary/20"
                     >
-                      <Image
+                      <img
                         src={img}
                         alt={`${product.title} ${i + 2}`}
-                        fill
-                        sizes="(max-width: 1024px) 25vw, 12vw"
-                        className="object-cover"
+                        className="w-full h-full object-cover"
+                        
+                        loading="eager"
                       />
                     </div>
                   ))}

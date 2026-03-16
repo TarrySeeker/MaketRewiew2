@@ -1,0 +1,15 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tableGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dcfce7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#tableGrad)"/>
+  <g transform="translate(400,250)">
+    <ellipse cx="0" cy="-10" rx="80" ry="15" fill="#166534" opacity="0.4"/>
+    <rect x="-5" y="-10" width="10" height="50" fill="#166534" opacity="0.3"/>
+  </g>
+  <text x="400" y="380" text-anchor="middle" font-family="serif" font-size="32" font-weight="bold" fill="#166534">Столы</text>
+  <text x="400" y="420" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#166534" opacity="0.7">Обеденные и журнальные столы</text>
+</svg>

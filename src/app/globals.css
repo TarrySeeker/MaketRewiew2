@@ -5,20 +5,72 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
   }
   
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
+  }
+
+  /* Исправление для изображений */
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+  }
+
+  /* Предотвращение скролла при модальных окнах */
+  .modal-open {
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  /* Исправления для Next.js Image */
+  .next-image-wrapper {
+    position: relative;
+  }
+
+  /* Улучшение hover эффектов */
+  .image-hover {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .image-hover:hover {
+    transform: scale(1.05);
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  /* Предотвращение переполнения */
+  .container {
+    overflow-x: hidden;
+  }
+  
+  /* Скрытие скроллбара в слайдерах */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }

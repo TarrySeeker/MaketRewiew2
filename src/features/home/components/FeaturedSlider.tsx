@@ -42,7 +42,7 @@ export function FeaturedSlider({ products }: { products: any[] }) {
                         <Link
                             key={product.id}
                             href={`/product/${product.id}`}
-                            className="group w-[60vw] max-w-[280px] md:w-[30vw] md:max-w-[340px] snap-center snap-always flex-shrink-0"
+                            className="group w-[45vw] max-w-[240px] md:w-[30vw] md:max-w-[340px] snap-center snap-always flex-shrink-0"
                         >
                             <motion.div
                                 initial={{ opacity: 0, y: 50 }}

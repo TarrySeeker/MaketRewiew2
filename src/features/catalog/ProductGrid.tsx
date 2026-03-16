@@ -22,16 +22,16 @@ export function ProductGrid({ products }: ProductGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
       {products.map((product, i) => (
         <Link key={product.id} href={`/product/${product.id}`} className="group">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: i * 0.05 }}
+            transition={{ duration: 0.3, delay: i * 0.01 }}
             className="flex flex-col"
           >
-            <div className="relative aspect-[3/4] w-full bg-secondary/10 overflow-hidden isolate mb-6">
+            <div className="relative aspect-[3/4] w-full bg-secondary/10 overflow-hidden mb-6">
               {product.images[0] ? (
                 <>
                   <Image
@@ -39,7 +39,7 @@ export function ProductGrid({ products }: ProductGridProps) {
                     alt={product.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-1000 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
                   />
                   {/* Glitch Overlay Effect */}
                   <div className="absolute inset-0 bg-primary mix-blend-overlay opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none z-10" />

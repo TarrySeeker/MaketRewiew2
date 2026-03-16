@@ -292,7 +292,7 @@ export default function AdminProductsPage() {
             <Card key={product.id}>
               <CardContent className="p-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
+                  <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
                     {product.images[0] ? (
                       <Image
                         src={product.images[0]}

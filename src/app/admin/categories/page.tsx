@@ -194,7 +194,7 @@ export default function AdminCategoriesPage() {
               <CardContent className="p-4">
                 <div className="flex items-center gap-4">
                   {category.image && (
-                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
+                    <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
                       <Image
                         src={category.image}
                         alt={category.name}

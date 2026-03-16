@@ -100,7 +100,7 @@ export function Header() {
 
         {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-20 left-0 w-full h-[calc(100vh-80px)] bg-background/95 backdrop-blur-md border-t border-border flex flex-col p-6 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="md:hidden fixed top-20 left-0 right-0 bottom-0 bg-background/98 backdrop-blur-md border-t border-border flex flex-col p-6 gap-6 z-[100] overflow-y-auto">
             <form onSubmit={(e) => { handleSearch(e); setIsMobileMenuOpen(false); }} className="w-full mb-4">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -128,6 +128,13 @@ export function Header() {
                 className="hover:text-primary transition-colors"
               >
                 О нас
+              </Link>
+              <Link
+                href="/contacts"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-primary transition-colors"
+              >
+                Контакты
               </Link>
               <Link
                 href="/wishlist"

@@ -7,7 +7,7 @@ export let MOCK_CATEGORIES: Category[] = [
         slug: "sofas",
         parent_id: null,
         description: "Премиальные дизайнерские диваны для вашего интерьера.",
-        image: "/images/sofas/sofa-1.jpg",
+        image: "https://images.unsplash.com/photo-1550254478-ead40cc54513?auto=format&fit=crop&q=80&w=800",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         sort_order: 1,
@@ -18,7 +18,7 @@ export let MOCK_CATEGORIES: Category[] = [
         slug: "chairs",
         parent_id: null,
         description: "Эргономичные кресла и стулья для интерьера.",
-        image: "/images/chairs/chair-1.jpg",
+        image: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=800",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         sort_order: 2,
@@ -29,7 +29,7 @@ export let MOCK_CATEGORIES: Category[] = [
         slug: "tables",
         parent_id: null,
         description: "Обеденные и журнальные столы из массива.",
-        image: "/images/tables/table-1.jpg",
+        image: "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?auto=format&fit=crop&q=80&w=800",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         sort_order: 3,
@@ -40,7 +40,7 @@ export let MOCK_CATEGORIES: Category[] = [
         slug: "beds",
         parent_id: null,
         description: "Роскошные кровати для спальни.",
-        image: "/images/beds/bed-1.jpg",
+        image: "https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&q=80&w=800",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         sort_order: 4,
@@ -84,10 +84,10 @@ const generateProducts = (categoryId: string, categoryName: string, basePrice: n
 };
 
 export let MOCK_PRODUCTS: Product[] = [
-    ...generateProducts("cat-1", "Диван", 120000, "/images/sofas/sofa-1.jpg"),
-    ...generateProducts("cat-2", "Кресло", 45000, "/images/chairs/chair-1.jpg"),
-    ...generateProducts("cat-3", "Стол", 85000, "/images/tables/table-1.jpg"),
-    ...generateProducts("cat-4", "Кровать", 150000, "/images/beds/bed-1.jpg"),
+    ...generateProducts("cat-1", "Диван", 120000, "https://images.unsplash.com/photo-1550254478-ead40cc54513?auto=format&fit=crop&q=80&w=800"),
+    ...generateProducts("cat-2", "Кресло", 45000, "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=800"),
+    ...generateProducts("cat-3", "Стол", 85000, "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?auto=format&fit=crop&q=80&w=800"),
+    ...generateProducts("cat-4", "Кровать", 150000, "https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&q=80&w=800"),
 ];
 
 // Утилиты для эмуляции БД

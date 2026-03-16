@@ -51,7 +51,7 @@ export default function CartPage() {
                 <Card key={item.product.id}>
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-                      <div className="w-full sm:w-32 h-48 sm:h-32 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
+                      <div className="relative w-full sm:w-32 h-48 sm:h-32 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
                         {item.product.images[0] ? (
                           <Image
                             src={item.product.images[0]}
@@ -95,7 +95,7 @@ export default function CartPage() {
                           </div>
                         </div>
 
-                        <div className="flex flex-wrap items-center justify-between gap-4 mt-2">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-2">
                           <div className="flex items-center border rounded-lg">
                             <button
                               onClick={() =>
@@ -119,7 +119,7 @@ export default function CartPage() {
                             </button>
                           </div>
 
-                          <div className="text-right">
+                          <div className="text-left sm:text-right w-full sm:w-auto">
                             <p className="font-serif text-xl sm:text-2xl font-bold text-primary">
                               {formatPrice(item.product.price * item.quantity)}
                             </p>
